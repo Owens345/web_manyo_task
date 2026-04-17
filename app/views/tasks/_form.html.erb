@@ -10,20 +10,20 @@
   <% end %>
 
   <div>
-    <%= form.label :title, 'Title' %>
+    <%= form.label :title, Task.human_attribute_name(:title) %>
     <%= form.text_field :title %>
   </div>
 
   <div>
-    <%= form.label :content, 'Content' %>
+    <%= form.label :content, Task.human_attribute_name(:content) %>
     <%= form.text_area :content %>
   </div>
 
   <div>
     <% if task.new_record? %>
-      <%= form.submit 'Create Task', id: 'create-task' %>
+      <%= form.submit t('tasks.new.submit'), id: 'create-task' %>
     <% else %>
-      <%= form.submit 'Update Task', id: 'update-task' %>
+      <%= form.submit t('tasks.edit.submit'), id: 'update-task' %>
     <% end %>
   </div>
 <% end %>

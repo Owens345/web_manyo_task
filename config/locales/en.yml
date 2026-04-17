@@ -31,3 +31,48 @@
 
 en:
   hello: "Hello world"
+en:
+  activerecord:
+    models:
+      task: task
+    attributes:
+      task:
+        title: Title
+        content: Contents
+    errors:
+      models:
+        task:
+          attributes:
+            title:
+              blank: Please enter a Title
+            content:
+              blank: Please enter the content
+  tasks:
+    index:
+      title: Task list page
+      new: Register a task
+      list: Task list
+      table:
+        title: Title
+        content: Content
+        created_at: Creation date and time
+        show: Details
+        edit: edit
+        destroy: delete
+      confirm: Are you sure you want to delete it?
+    new:
+      title: Task registration page
+      submit: register
+      back: Return
+    edit:
+      title: Task edit page
+      submit: Update
+      back: Return
+    show:
+      title: Task detail page
+      back: Return
+      edit: edit
+    flash:
+      created: I have registered a task
+      updated: Tasks have been updated
+      destroyed: The task has been deleted
