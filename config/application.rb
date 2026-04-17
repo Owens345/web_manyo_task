@@ -9,6 +9,8 @@ Bundler.require(*Rails.groups)
 module CdpWebManyoTask
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
+    config.time_zone = 'Nairobi'
+    config.active_record.default_timezone = :local
     config.load_defaults 6.0
     config.generators do |g|
       g.assets false

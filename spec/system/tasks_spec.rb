@@ -6,19 +6,36 @@ RSpec.describe 'Task management function', type: :system do
       it 'The registered task is displayed' do
         visit new_task_path
         fill_in 'Title', with: 'Document preparation'
-        fill_in 'Content', with: 'Create a proposal.'
-        click_button 'Create Task'
+        fill_in 'Contents', with: 'Create a proposal.'
+        click_button 'register'
         expect(page).to have_content 'Document preparation'
       end
     end
   end
 
   describe 'List display function' do
+    let!(:first_task) { FactoryBot.create(:task, title: 'first_task', created_at: '2022-02-18') }
+    let!(:second_task) { FactoryBot.create(:task, title: 'second_task', created_at: '2022-02-17') }
+    let!(:third_task) { FactoryBot.create(:task, title: 'third_task', created_at: '2022-02-16') }
+
+    before do
+      visit tasks_path
+    end
+
     context 'When transitioning to the list screen' do
-      it 'A list of registered tasks is displayed' do
-        FactoryBot.create(:task)
+      it 'The list of created tasks is displayed in descending order of creation date and time.' do
+        task_list = all('tbody tr')
+        expect(task_list.first).to have_content 'first_task'
+        expect(task_list.last).to have_content 'third_task'
+      end
+    end
+
+    context 'When creating a new task' do
+      it 'New task is displayed at the top' do
+        new_task = FactoryBot.create(:task, title: 'newest_task', created_at: '2022-02-19')
         visit tasks_path
-        expect(page).to have_content 'Document preparation'
+        task_list = all('tbody tr')
+        expect(task_list.first).to have_content 'newest_task'
       end
     end
   end
