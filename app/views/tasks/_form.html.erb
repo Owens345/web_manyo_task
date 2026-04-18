@@ -20,6 +20,21 @@
   </div>
 
   <div>
+    <%= form.label :deadline_on, Task.human_attribute_name(:deadline_on) %>
+    <%= form.date_field :deadline_on %>
+  </div>
+
+  <div>
+    <%= form.label :priority, Task.human_attribute_name(:priority) %>
+    <%= form.select :priority, Task.priorities.keys.map { |p| [t("enums.priority.#{p}"), p] }, { include_blank: true } %>
+  </div>
+
+  <div>
+    <%= form.label :status, Task.human_attribute_name(:status) %>
+    <%= form.select :status, Task.statuses.keys.map { |s| [t("enums.status.#{s}"), s] }, { include_blank: true } %>
+  </div>
+
+  <div>
     <% if task.new_record? %>
       <%= form.submit t('tasks.new.submit'), id: 'create-task' %>
     <% else %>

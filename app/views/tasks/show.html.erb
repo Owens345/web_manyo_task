@@ -11,6 +11,21 @@
 </p>
 
 <p>
+  <strong><%= Task.human_attribute_name(:deadline_on) %></strong>
+  <%= @task.deadline_on %>
+</p>
+
+<p>
+  <strong><%= Task.human_attribute_name(:priority) %></strong>
+  <%= t("enums.priority.#{@task.priority}") %>
+</p>
+
+<p>
+  <strong><%= Task.human_attribute_name(:status) %></strong>
+  <%= t("enums.status.#{@task.status}") %>
+</p>
+
+<p>
   <strong><%= t('tasks.index.table.created_at') %></strong>
   <%= @task.created_at.strftime('%Y-%m-%d %H:%M:%S') %>
 </p>
