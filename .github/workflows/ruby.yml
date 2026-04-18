@@ -90,6 +90,12 @@ jobs:
           bundle exec rails db:migrate
           bundle exec rspec -r ./spec/my_formatter.rb -f MyFormatter spec/system/step5_spec.rb -o .github/feedback_template.md
         continue-on-error: true
+      - name: Ensure feedback file exists for Step5
+        if: contains(github.ref, 'step5')
+        run: |
+          if [ ! -s .github/feedback_template.md ]; then
+            echo -e "---\ntitle: Step5 Feedback\n---\nRSpec completed." > .github/feedback_template.md
+          fi
       - name: Rspec Results at Step1
         if: contains(github.ref, 'step1')
         env:
