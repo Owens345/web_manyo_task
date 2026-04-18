@@ -1,0 +1,4 @@
+<h1>Account details page</h1>
+<p><strong>Name</strong> <%= @user.name %></p>
+<p><strong>Email address</strong> <%= @user.email %></p>
+<%= link_to 'edit', edit_user_path(@user), id: 'edit-user', class: 'btn btn-warning' %>

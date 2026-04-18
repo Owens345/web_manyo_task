@@ -18,7 +18,8 @@ RSpec.describe 'Task model function', type: :model do
 
     context 'If the task Title and description have values' do
       it 'You can register a task' do
-        task = Task.new(title: 'Test title', content: 'Create a proposal.', deadline_on: '2022-02-18', priority: :medium, status: :not_started)
+        user = FactoryBot.create(:user)
+        task = Task.new(title: 'Test title', content: 'Create a proposal.', deadline_on: '2022-02-18', priority: :medium, status: :not_started, user: user)
         expect(task).to be_valid
       end
     end

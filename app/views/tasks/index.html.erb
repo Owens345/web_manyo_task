@@ -9,6 +9,10 @@
     <%= f.label :title, t('tasks.index.table.title') %>
     <%= f.text_field :title %>
   </div>
+  <div>
+    <%= f.label :label_id, 'Label' %>
+    <%= f.select :label_id, current_user.labels.map { |l| [l.name, l.id] }, { include_blank: true }, {} %>
+  </div>
   <%= f.submit t('tasks.index.search'), id: 'search_task' %>
 <% end %>
 

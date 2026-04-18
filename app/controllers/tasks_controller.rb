@@ -1,19 +1,21 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[ show edit update destroy ]
+  before_action :require_login
+  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:show, :edit, :update, :destroy]
 
-  # GET /tasks or /tasks.json
   def index
-    @tasks = Task.latest
+    @tasks = current_user.tasks.latest
 
     if params[:sort_deadline_on]
-      @tasks = Task.sort_deadline
+      @tasks = current_user.tasks.sort_deadline
     elsif params[:sort_priority]
-      @tasks = Task.sort_priority
+      @tasks = current_user.tasks.sort_priority
     end
 
     if params[:search].present?
       title = params[:search][:title]
       status = params[:search][:status]
+      label_id = params[:search][:label_id]
 
       if title.present? && status.present?
         @tasks = @tasks.search_title(title).search_status(status)
@@ -21,71 +23,60 @@ class TasksController < ApplicationController
         @tasks = @tasks.search_title(title)
       elsif status.present?
         @tasks = @tasks.search_status(status)
+      elsif label_id.present?
+        @tasks = @tasks.search_label(label_id)
       end
     end
-  
-  @tasks = @tasks.page(params[:page]).per(10)
-end
 
-  # GET /tasks/1 or /tasks/1.json
+    @tasks = @tasks.page(params[:page]).per(10)
+  end
+
   def show
   end
 
-  # GET /tasks/new
   def new
     @task = Task.new
   end
 
-  # GET /tasks/1/edit
   def edit
   end
 
-  # POST /tasks or /tasks.json
   def create
-    @task = Task.new(task_params)
-
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to task_url(@task), notice: t('tasks.flash.created') }
-        format.json { render :show, status: :created, location: @task }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    @task = current_user.tasks.build(task_params)
+    if @task.save
+      redirect_to @task, notice: t('tasks.flash.created')
+    else
+      render :new
     end
   end
 
-  # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
-    respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to task_url(@task), notice: t('tasks.flash.updated') }
-        format.json { render :show, status: :ok, location: @task }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    if @task.update(task_params)
+      redirect_to @task, notice: t('tasks.flash.updated')
+    else
+      render :edit
     end
   end
 
-  # DELETE /tasks/1 or /tasks/1.json
   def destroy
     @task.destroy
-
-    respond_to do |format|
-      format.html { redirect_to tasks_url, notice: t('tasks.flash.destroyed') }
-      format.json { head :no_content }
-    end
+    redirect_to tasks_url, notice: t('tasks.flash.destroyed')
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = Task.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def task_params
-      params.require(:task).permit(:title, :content)
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
+  def task_params
+    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status, label_ids: [])
+  end
+
+  def correct_user
+    unless @task.user == current_user
+      flash[:alert] = 'You do not have permission to access'
+      redirect_to tasks_path
     end
+  end
 end

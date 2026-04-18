@@ -1,0 +1,3 @@
+<h1>User edit page</h1>
+<%= render 'form', user: @user, url: admin_user_path(@user) %>
+<%= link_to 'Return', admin_users_path, id: 'back', class: 'btn btn-secondary' %>
