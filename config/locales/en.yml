@@ -30,8 +30,6 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
-en:
   activerecord:
     models:
       task: task
@@ -39,6 +37,9 @@ en:
       task:
         title: Title
         content: Contents
+        deadline_on: End date
+        priority: Priority
+        status: Status
     errors:
       models:
         task:
@@ -47,15 +48,25 @@ en:
               blank: Please enter a Title
             content:
               blank: Please enter the content
+            deadline_on:
+              blank: Please enter an end date
+            priority:
+              blank: Please enter your priority
+            status:
+              blank: Please enter your status
   tasks:
     index:
       title: Task list page
       new: Register a task
       list: Task list
+      search: Search
       table:
         title: Title
         content: Content
         created_at: Creation date and time
+        deadline_on: End date
+        priority: Priority
+        status: Status
         show: Details
         edit: edit
         destroy: delete
@@ -76,3 +87,12 @@ en:
       created: I have registered a task
       updated: Tasks have been updated
       destroyed: The task has been deleted
+  enums:
+    priority:
+      low: low
+      medium: medium
+      high: high
+    status:
+      not_started: Not Started
+      in_progress: In Progress
+      completed: Completed
