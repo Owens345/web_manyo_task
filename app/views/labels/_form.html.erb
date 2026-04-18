@@ -1,0 +1,18 @@
+<%= form_with model: label, local: true do |f| %>
+  <% if label.errors.any? %>
+    <ul>
+      <% label.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <div class="form-group">
+    <%= f.label :name, 'Name' %>
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
+  <% if label.new_record? %>
+    <%= f.submit 'register', class: 'btn btn-primary' %>
+  <% else %>
+    <%= f.submit 'Update', class: 'btn btn-primary' %>
+  <% end %>
+<% end %>

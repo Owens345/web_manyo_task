@@ -7,21 +7,42 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
   </head>
 
   <body>
-    <nav>
-      <%= link_to t('tasks.index.list'), tasks_path, id: 'tasks-index' %>
-      <%= link_to t('tasks.index.new'), new_task_path, id: 'new-task' %>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="navbar-nav ml-auto">
+        <% if logged_in? %>
+          <%= link_to 'Task list', tasks_path, id: 'tasks-index', class: 'nav-link' %>
+          <%= link_to 'Register a task', new_task_path, id: 'new-task', class: 'nav-link' %>
+          <%= link_to 'List of labels', labels_path, id: 'labels-index', class: 'nav-link' %>
+          <%= link_to 'Register a label', new_label_path, id: 'new-label', class: 'nav-link' %>
+          <%= link_to 'Account Settings', user_path(current_user), id: 'account-setting', class: 'nav-link' %>
+
+          <% if current_user.admin? %>
+            <%= link_to 'User list', admin_users_path, id: 'users-index', class: 'nav-link' %>
+            <%= link_to 'Register a user', new_admin_user_path, id: 'add-user', class: 'nav-link' %>
+          <% end %>
+
+          <%= link_to 'Log out', logout_path, method: :delete, id: 'sign-out', class: 'nav-link' %>
+        <% else %>
+          <%= link_to 'Register for an account', new_user_path, id: 'sign-up', class: 'nav-link' %>
+          <%= link_to 'Login', new_session_path, id: 'sign-in', class: 'nav-link' %>
+        <% end %>
+      </div>
     </nav>
 
     <% if notice %>
-      <p><%= notice %></p>
-    <% end %>
-    <% if alert %>
-      <p><%= alert %></p>
+      <div class="alert alert-success m-3"><%= notice %></div>
     <% end %>
 
-    <%= yield %>
+    <% if alert %>
+      <div class="alert alert-danger m-3"><%= alert %></div>
+    <% end %>
+
+    <div class="container mt-4">
+      <%= yield %>
+    </div>
   </body>
 </html>
