@@ -4,30 +4,34 @@ RSpec.describe 'Task model function', type: :model do
   describe 'Validation test' do
     context 'If the task Title is an empty string' do
       it 'Validation fails' do
-        task = Task.new(title: '', content: 'Create a proposal.', deadline_on: '2022-02-18', priority: :medium, status: :not_started)
+        user = FactoryBot.create(:user)
+        task = Task.new(title: '', content: 'Create a proposal.', deadline_on: '2022-02-18', priority: :medium, status: :not_started, user: user)
         expect(task).not_to be_valid
       end
     end
 
     context 'If the task description is empty' do
       it 'Validation fails' do
-        task = Task.new(title: 'Test title', content: '', deadline_on: '2022-02-18', priority: :medium, status: :not_started)
+        user = FactoryBot.create(:user)
+        task = Task.new(title: 'Test title', content: '', deadline_on: '2022-02-18', priority: :medium, status: :not_started, user: user)
         expect(task).not_to be_valid
       end
     end
 
     context 'If the task Title and description have values' do
       it 'You can register a task' do
-        task = Task.new(title: 'Test title', content: 'Create a proposal.', deadline_on: '2022-02-18', priority: :medium, status: :not_started)
+        user = FactoryBot.create(:user)
+        task = Task.new(title: 'Test title', content: 'Create a proposal.', deadline_on: '2022-02-18', priority: :medium, status: :not_started, user: user)
         expect(task).to be_valid
       end
     end
   end
 
   describe 'Search function' do
-    let!(:first_task)  { FactoryBot.create(:task,        title: 'first_task_title',  deadline_on: '2022-02-18', priority: :medium, status: :not_started) }
-    let!(:second_task) { FactoryBot.create(:second_task, title: 'second_task_title', deadline_on: '2022-02-17', priority: :high,   status: :in_progress) }
-    let!(:third_task)  { FactoryBot.create(:third_task,  title: 'third_task_title',  deadline_on: '2022-02-16', priority: :low,    status: :completed) }
+    let!(:user) { FactoryBot.create(:user) }
+    let!(:first_task)  { FactoryBot.create(:task,        title: 'first_task_title',  deadline_on: '2022-02-18', priority: :medium, status: :not_started, user: user) }
+    let!(:second_task) { FactoryBot.create(:second_task, title: 'second_task_title', deadline_on: '2022-02-17', priority: :high,   status: :in_progress, user: user) }
+    let!(:third_task)  { FactoryBot.create(:third_task,  title: 'third_task_title',  deadline_on: '2022-02-16', priority: :low,    status: :completed,   user: user) }
 
     context 'Title is performed by scope method' do
       it 'Tasks containing search words are narrowed down.' do

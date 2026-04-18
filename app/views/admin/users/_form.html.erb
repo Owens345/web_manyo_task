@@ -1,0 +1,35 @@
+<%= form_with model: [:admin, user], url: url, local: true do |f| %>
+  <% if user.errors.any? %>
+    <ul>
+      <% user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <div>
+    <%= f.label :name, 'Name' %>
+    <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :email, 'Email address' %>
+    <%= f.email_field :email %>
+  </div>
+  <div>
+    <%= f.label :password, 'Password' %>
+    <%= f.password_field :password %>
+  </div>
+  <div>
+    <%= f.label :password_confirmation, 'Password (confirmation)' %>
+    <%= f.password_field :password_confirmation %>
+  </div>
+  <div>
+    <%= f.label :admin, 'Administrator rights' %>
+    <%= f.check_box :admin %>
+  </div>
+  <% if user.new_record? %>
+    <%= f.submit 'register', id: 'create-user' %>
+  <% else %>
+    <%= f.submit 'Update', id: 'update-user' %>
+  <% end %>
+<% end %>
