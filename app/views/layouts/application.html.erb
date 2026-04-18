@@ -11,8 +11,19 @@
 
   <body>
     <nav>
-      <%= link_to t('tasks.index.list'), tasks_path, id: 'tasks-index' %>
-      <%= link_to t('tasks.index.new'), new_task_path, id: 'new-task' %>
+      <% if logged_in? %>
+        <%= link_to 'Task list', tasks_path, id: 'tasks-index' %>
+        <%= link_to 'Register a task', new_task_path, id: 'new-task' %>
+        <%= link_to 'Account Settings', user_path(current_user), id: 'account-setting' %>
+        <% if current_user.admin? %>
+          <%= link_to 'User list', admin_users_path, id: 'users-index' %>
+          <%= link_to 'Register a user', new_admin_user_path, id: 'add-user' %>
+        <% end %>
+        <%= link_to 'Log out', logout_path, method: :delete, id: 'sign-out' %>
+      <% else %>
+        <%= link_to 'Register for an account', new_user_path, id: 'sign-up' %>
+        <%= link_to 'Login', new_session_path, id: 'sign-in' %>
+      <% end %>
     </nav>
 
     <% if notice %>
